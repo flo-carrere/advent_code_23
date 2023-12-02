@@ -7,7 +7,11 @@ project(
   LANGUAGES C
 )
 
+# Available choice are 1 or 2
+message(STATUS "Building for part: ${CHECK_PART}")
+
 add_executable(app)
+target_compile_definitions(app PUBLIC CHECK_PART=${CHECK_PART})
 
 set(SRCDIR "src")
 
