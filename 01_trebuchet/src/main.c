@@ -4,7 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define CHECK_PART_2
+
 int extract_calibration_value(char *input);
+
+int is_string_digit(char *input);
 
 int main(int argc, char *argv[]) {
 
@@ -40,19 +44,56 @@ int main(int argc, char *argv[]) {
 int extract_calibration_value(char *input) {
     size_t input_length = strlen(input) - 1; // excluding \n from the input
 
-    char *start_tmp    = &input[0];
-    char *end_tmp      = &input[input_length - 1];
-    char calibration[] = "00";
+    char *start_tmp = &input[0];
+    char *end_tmp   = &input[input_length - 1];
+    int calibration[2];
 
-    while (!isdigit(*start_tmp))
+    while (1) {
+        if (isdigit(*start_tmp)) {
+            calibration[0] = *start_tmp - '0';
+            printf("Found %d\n", calibration[0]);
+            break;
+        }
+
+#ifdef CHECK_PART_2
+        int string_digit = is_string_digit(start_tmp);
+        if (string_digit >= 0) {
+            calibration[0] = string_digit;
+            break;
+        }
+#endif
         start_tmp++;
+    }
 
-    while (!isdigit(*end_tmp))
+    while (1) {
+        if (isdigit(*end_tmp)) {
+            calibration[1] = *end_tmp - '0';
+            printf("Found %d\n", calibration[1]);
+            break;
+        }
+
+#ifdef CHECK_PART_2
+        int string_digit = is_string_digit(end_tmp);
+        if (string_digit >= 0) {
+            calibration[1] = string_digit;
+            break;
+        }
+#endif
         end_tmp--;
+    }
 
-    // Assign result to final calibration
-    calibration[0] = *start_tmp;
-    calibration[1] = *end_tmp;
+    return (calibration[0] * 10) + calibration[1];
+}
 
-    return atoi(calibration);
+int is_string_digit(char *input) {
+    char str_digits[10][6]  = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+    int str_digits_size[10] = {4, 3, 3, 5, 4, 4, 3, 5, 5, 4};
+
+    for (int i = 0; i < 10; ++i) {
+        if (!strncmp(input, &str_digits[i][0], str_digits_size[i])) {
+            printf("Found %s\n", &str_digits[i][0]);
+            return i;
+        }
+    }
+    return -1;
 }
