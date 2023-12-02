@@ -1,0 +1,18 @@
+Game 1: 12 red
+Game 1: 12 green
+Game 1: 12 blue
+Game 1: 13 green
+Game 1: 13 blue
+Game 1: 14 blue
+
+Game 1: 12 red; 13 green; 14 blue
+Game 1: 14 blue; 12 red; 13 green
+Game 1: 13 green; 14 blue; 12 red
+
+Game 1: 12 red, 13 green; 14 blue
+Game 1: 13 green, 14 blue; 14 blue
+
+Game 1: 12 red 13 green 14 blue
+Game 1: 14 blue 12 red 13 green
+
+Game 1: 1 blue, 2 red, 3 green; 4 blue, 5 red, 6 green ; 12 blue, 12 red, 12 green ; 14 blue, 12 red, 13 green
