@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
     char buffer[buffer_length];
     file_pointer = fopen(input, "r");
 
-#if CHECK_PART == 1
+#if BUILD_FOR_PART_1
     // Initialized with hard limits
     struct limits_s limits = {
         .red   = 12,
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 
     // Print the output value
     printf("Sum of IDs of possible games: %d\n", sum_ids_game);
-#elif CHECK_PART == 2
+#else
     // Read line by line
     int sum_power_of_sets = 0;
     while (fgets(buffer, buffer_length, file_pointer)) {
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
 
     // Print the output value
     printf("Sum of the power of the sets: %d\n", sum_power_of_sets);
-#endif
+#endif // BUILD_FOR_PART_1
 
     fclose(file_pointer);
     return 0;
