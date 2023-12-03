@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CHECK_PART_2
-
 int extract_calibration_value(char *input);
 
 int is_string_digit(char *input);
@@ -55,7 +53,7 @@ int extract_calibration_value(char *input) {
             break;
         }
 
-#ifdef CHECK_PART_2
+#if CHECKS_PART_2
         int string_digit = is_string_digit(start_tmp);
         if (string_digit >= 0) {
             calibration[0] = string_digit;
@@ -72,7 +70,7 @@ int extract_calibration_value(char *input) {
             break;
         }
 
-#ifdef CHECK_PART_2
+#if CHECKS_PART_2
         int string_digit = is_string_digit(end_tmp);
         if (string_digit >= 0) {
             calibration[1] = string_digit;
