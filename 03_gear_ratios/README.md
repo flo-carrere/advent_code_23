@@ -11,6 +11,18 @@ cmake -G Ninja -B build -S .
 cmake --build .\build\
 ```
 
+## Build options
+
+<BUILD_FOR_PART_1> "Builds for part 1 of the exercise"  
+<DISPLAY_SCHEMATIC> "Debug option to display schematic" (default ON)  
+<DISPLAY_PARTS> "Debug option to display all extracted parts" (default OFF)  
+<DISPLAY_SYMBOLS> "Debug option to display all extracted symbols" (default OFF)  
+
+```
+cmake -G Ninja -B build -S . -DDISPLAY_PARTS=ON -DDISPLAY_SYMBOLS=ON
+cmake --build .\build\
+```
+
 ## Testing
 
 Once built you can invoke the <app.exe> executable on some input files.
