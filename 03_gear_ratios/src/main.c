@@ -26,6 +26,12 @@ struct symbol {
 int determine_adjacency(struct part *list_parts, struct symbol *list_symbols);
 
 /**
+ * \brief Determine the sum of gear ratios of a given list of parts towards a list of symbols
+ * \returns The sum of gear ratios
+ */
+int determine_gear_ratios(struct part *list_parts, struct symbol *list_symbols);
+
+/**
  * \brief Determine whether a given part is adjacent to a symbol
  * \returns true if adjacent, false otherwise
  */
@@ -142,11 +148,17 @@ int main(int argc, char *argv[]) {
     display_parts(list_parts.next);
     display_symbols(list_symbols.next);
 
+#if BUILD_FOR_PART_1
     // 2. Determine adjencency of parts vs symbols -> (real) parts
     int sum_part_numbers = determine_adjacency(list_parts.next, list_symbols.next);
-
     // Print the output value
     printf("Sum of all the part numbers in the schematic: %d\n", sum_part_numbers);
+#else
+    // 2. Determine gear ratios by looking at * adjacent to parts
+    int sum_gear_ratios = determine_gear_ratios(list_parts.next, list_symbols.next);
+    // Print the output value
+    printf("Sum of all the gear ratios in the schematic: %d\n", sum_gear_ratios);
+#endif
 
     // Free all parts and symbols
     delete_parts(list_parts.next);
@@ -182,6 +194,46 @@ int determine_adjacency(struct part *list_parts, struct symbol *list_symbols) {
     }
 
     return sum_of_parts_in_schematic;
+}
+
+int determine_gear_ratios(struct part *list_parts, struct symbol *list_symbols) {
+    int sum_of_gear_ratios        = 0;
+    struct symbol *current_symbol = list_symbols;
+
+    // For each symbol
+    while (current_symbol) {
+        if (current_symbol->value != '*') {
+            // Skip this as not relevant
+            current_symbol = current_symbol->next;
+            continue;
+        }
+
+        // Initialise to first part again
+        struct part *current_part = list_parts;
+        int gear_ratio            = 1;
+        int adjacent_part         = 0;
+
+        // For each part
+        while (current_part && (adjacent_part <= 2)) {
+            if (is_part_adjacent_to_symbol(current_part, current_symbol)) {
+                adjacent_part++;
+                gear_ratio *= current_part->number;
+                printf("* -> %d\n", current_part->number);
+            }
+            // Inspect next symbol
+            current_part = current_part->next;
+        }
+
+        // If not exactly two adjacent part, just clear the gear_ratio
+        if (adjacent_part != 2)
+            gear_ratio = 0;
+
+        sum_of_gear_ratios += gear_ratio;
+        // Inspect next symbol
+        current_symbol = current_symbol->next;
+    }
+
+    return sum_of_gear_ratios;
 }
 
 bool is_part_adjacent_to_symbol(struct part *part, struct symbol *symbol) {

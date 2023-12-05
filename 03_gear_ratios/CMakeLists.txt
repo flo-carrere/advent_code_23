@@ -7,7 +7,7 @@ project(
   LANGUAGES C
 )
 
-option(BUILD_FOR_PART_1 "Builds for part 1 of the exercise" ON)
+option(BUILD_FOR_PART_1 "Builds for part 1 of the exercise" OFF)
 option(DISPLAY_SCHEMATIC "Debug option to display schematic" ON)
 option(DISPLAY_PARTS "Debug option to display parts" OFF)
 option(DISPLAY_SYMBOLS "Debug option to display symbols" OFF)
@@ -15,8 +15,11 @@ option(DISPLAY_SYMBOLS "Debug option to display symbols" OFF)
 add_executable(app)
 
 if(BUILD_FOR_PART_1)
-  message(STATUS "Building for part 1 : determining all part numbers in the schematic")
-  target_compile_definitions(app PUBLIC -DBUILD_FOR_PART_1)
+  message(STATUS "Building for part 1 : determining part numbers adjacent to symbols in the schematic")
+  target_compile_definitions(app PUBLIC -DBUILD_FOR_PART_1=1)
+else()
+  message(STATUS "Building for part 2 : determining all gear ratios in the schematic")
+  target_compile_definitions(app PUBLIC -DBUILD_FOR_PART_1=0)
 endif()
 
 if(DISPLAY_SCHEMATIC)
