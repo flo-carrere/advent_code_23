@@ -69,8 +69,13 @@ int main(int argc, char *argv[]) {
         .next   = NULL,
     };
 
+    // Part 2 - map index/match/scratchcards
+    int matches[250]      = {};
+    int scratchcards[250] = {};
+
     // Read schematic line by line
     int sum_of_points = 0;
+    int card_id       = 0;
     while (fgets(buffer, buffer_length, file_pointer)) {
         struct number *current_last_winning = &list_winning;
         struct number *current_last_number  = &list_numbers;
@@ -78,32 +83,49 @@ int main(int argc, char *argv[]) {
 
         // 1. Extract winning numbers and your numbers
         char *current_pos = buffer;
-        next_integer_from_input(&current_pos, ':'); // extract card id
+        card_id           = next_integer_from_input(&current_pos, ':'); // extract card id
         extract_numbers(&current_pos, &current_last_winning);
         extract_numbers(&current_pos, &current_last_number);
 
+#if BUILD_FOR_PART_1
         // Make a nice debug output
         display(list_winning.next, "Winning numbers");
         display(list_numbers.next, "Your numbers");
-
+#endif
         // 2. Intersect the two lists
-        int match = intersect(list_winning.next, list_numbers.next);
-        card_points = (match > 0) ? (1 << (match-1)) : 0;
+        int match   = intersect(list_winning.next, list_numbers.next);
+        card_points = (match > 0) ? (1 << (match - 1)) : 0;
+#if BUILD_FOR_PART_1
         // no new line accounting for \n in the input
         printf("%s -> %d matche(s) -> %d points \n", buffer, match, card_points);
+#endif
         sum_of_points += card_points;
+
+        // Store id/match
+        matches[card_id]      = match;
+        scratchcards[card_id] = 1;
 
         // Free all numbers
         delete (list_winning.next);
         delete (list_numbers.next);
     }
 
-    int sum_of_scratchcards = 0;
-
 #if BUILD_FOR_PART_1
     // Print the output value
     printf("Sum of points for all: %d\n", sum_of_points);
 #else
+    int sum_of_scratchcards = 0;
+    // Traverse all scratchcards from 1 -> last card
+    for (int i = 1; i <= card_id; i++) {
+        printf("%d id -> %d sc\n", i, scratchcards[i]);
+        sum_of_scratchcards += scratchcards[i];
+        // For each subsequent scratchcard according to matches at index i
+        for (int j = 1; j <= matches[i]; j++) {
+            // Add "1" per scratchcard (original + copies) at index i
+            scratchcards[i + j] += scratchcards[i];
+        }
+    }
+
     // Print the output value
     printf("Total number of scratchcards: %d\n", sum_of_scratchcards);
 #endif

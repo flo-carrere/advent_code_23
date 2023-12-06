@@ -7,7 +7,7 @@ project(
   LANGUAGES C
 )
 
-option(BUILD_FOR_PART_1 "Builds for part 1 of the exercise" ON)
+option(BUILD_FOR_PART_1 "Builds for part 1 of the exercise" OFF)
 
 add_executable(app)
 
@@ -15,7 +15,7 @@ if(BUILD_FOR_PART_1)
   message(STATUS "Building for part 1 : determining total number of points worth on all games")
   target_compile_definitions(app PUBLIC -DBUILD_FOR_PART_1=1)
 else()
-  message(STATUS "Building for part 2 : TODO")
+  message(STATUS "Building for part 2 : determine total number of scratchcards")
   target_compile_definitions(app PUBLIC -DBUILD_FOR_PART_1=0)
 endif()
 
