@@ -120,7 +120,7 @@ int64_t next_integer_from_input(char **input, char stop_char) {
         return 0;
     }
 
-    // Extract next integer and characters read
+    // Extract next integer and character read
     int64_t next = 0, pos = 0;
     if (sscanf(tmp, "%lld%n", &next, &pos) != 1)
         return 0;
